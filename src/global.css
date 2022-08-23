@@ -1,0 +1,38 @@
+html {
+  background: #1a1a1a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  border: none;
+  font-family: "Inter", sans-serif;
+}
+
+input {
+  padding: 8px;
+  border-radius: 2px;
+  color: #1a1a1a;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover,
+button:focus {
+  filter: brightness(0.9);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555555;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #424242;
+}

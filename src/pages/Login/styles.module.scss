@@ -1,0 +1,52 @@
+.container {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fieldLogin {
+  max-width: 300px;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.9rem;
+
+  h1 {
+    border-bottom: 1px solid #fcba03;
+  }
+
+  .fieldLoginItem {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.3rem;
+
+    label {
+      padding-left: 2px;
+      font-size: 14px;
+    }
+
+    input {
+      font-size: 16px;
+    }
+  }
+
+  button {
+    margin-top: 0.5rem;
+    padding: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: 0.1s ease;
+    background: #fcba03;
+    color: #1a1a1a;
+
+    &:hover {
+      filter: brightness(0.9);
+    }
+  }
+}
