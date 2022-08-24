@@ -3,105 +3,20 @@ import { useDispatch } from "react-redux";
 import { AppMenu } from "../../components/AppMenu";
 import { RoomContent } from "../../components/RoomContent";
 import { RoomHeader } from "../../components/RoomHeader";
-import { AuthContext } from "../../context/AuthContext";
+import { AppContext } from "../../context/AppContext";
 import { setCurrentRoom } from "../../context/redux/slices/roomSlice";
 import { api } from "../../services/api";
 import { Room } from "../../utils/interfaces";
+import io from "socket.io-client";
 import styles from "./styles.module.scss";
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const { user } = useContext(AuthContext);
+  let { user, socket } = useContext(AppContext);
 
   const [rooms, setRooms] = useState<Room[]>([]);
 
-  // const rooms = [
-  //   {
-  //     id: 1,
-  //     name: "Frank",
-  //     lastMessage: "Hello my name is Frank",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Mike",
-  //     lastMessage: "Hello my name is Mike",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Larry",
-  //     lastMessage: "Hello my name is Larry",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Jesse",
-  //     lastMessage: "Hello my name is Jesse",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Kimberly",
-  //     lastMessage: "Hello my name is Kimberly",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Bob",
-  //     lastMessage: "Hello my name is Bob",
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Mary",
-  //     lastMessage: "Hello my name is Mary",
-  //   },
-  //   {
-  //     id: 8,
-  //     name: "Jhon",
-  //     lastMessage: "Hello my name is Jhon",
-  //   },
-  //   {
-  //     id: 9,
-  //     name: "Keith",
-  //     lastMessage: "Hello my name is Keith",
-  //   },
-  //   {
-  //     id: 10,
-  //     name: "Caio",
-  //     lastMessage: "Hello my name is Caio",
-  //   },
-  //   {
-  //     id: 11,
-  //     name: "Cleyton",
-  //     lastMessage: "Hello my name is Cleyton",
-  //   },
-  //   {
-  //     id: 12,
-  //     name: "Jhonathan",
-  //     lastMessage: "Hello my name is Jhonathan",
-  //   },
-  //   {
-  //     id: 13,
-  //     name: "Kimberly",
-  //     lastMessage: "Hello my name is Kimberly",
-  //   },
-  //   {
-  //     id: 14,
-  //     name: "Bob",
-  //     lastMessage: "Hello my name is Bob",
-  //   },
-  //   {
-  //     id: 15,
-  //     name: "Lisa",
-  //     lastMessage: "Hello my name is Lisa",
-  //   },
-  //   {
-  //     id: 16,
-  //     name: "Michael",
-  //     lastMessage: "Hello my name is Michael",
-  //   },
-  //   {
-  //     id: 17,
-  //     name: "Lara",
-  //     lastMessage: "Hello my name is Lara",
-  //   },
-  // ];
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -113,10 +28,20 @@ function Dashboard() {
         },
       })
       .then((res) => {
-        console.log(res.data);
         setRooms(res.data.rooms);
+        socket.current = io("http://localhost:3333");
+        setReady(true);
       });
   }, []);
+
+  useEffect(() => {
+    if (ready && socket.current && user) {
+      socket.current.emit("channel", user.id);
+      socket.current.on("chat message", (message) => {
+        console.log(message);
+      });
+    }
+  }, [ready]);
 
   function handleSetCurrentRoom(room: Room) {
     dispatch(setCurrentRoom(room));

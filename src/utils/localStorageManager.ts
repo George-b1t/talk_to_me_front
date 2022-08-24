@@ -7,7 +7,7 @@ function setLocalStorageUser(user: User) {
 function getLocalStorageUser() {
   const stringUser = localStorage.getItem("user");
 
-  return stringUser ? JSON.parse(stringUser ?? "") : null;
+  return stringUser ? JSON.parse(stringUser) : null;
 }
 
 function setLocalStorageToken(token: string) {

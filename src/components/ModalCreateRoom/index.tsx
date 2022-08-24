@@ -1,7 +1,7 @@
 import { Lock, LockOpen, X } from "phosphor-react";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import ReactModal from "react-modal";
-import { AuthContext } from "../../context/AuthContext";
+import { AppContext } from "../../context/AppContext";
 import { api } from "../../services/api";
 import styles from "./styles.module.scss";
 
@@ -11,7 +11,7 @@ interface ModalCreateRoomProps {
 }
 
 function ModalCreateRoom({ isOpen, onRequestClose }: ModalCreateRoomProps) {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AppContext);
 
   const [name, setName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
@@ -37,6 +37,7 @@ function ModalCreateRoom({ isOpen, onRequestClose }: ModalCreateRoomProps) {
 
   return (
     <ReactModal
+      ariaHideApp={false}
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       overlayClassName="react-modal-overlay"

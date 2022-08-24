@@ -1,22 +1,33 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
+import { io, Socket } from "socket.io-client";
 import { User } from "../utils/interfaces";
 
-interface AuthContextData {
+interface AppContextData {
   user: User | null;
   setUser: (value: User | null) => void;
+  socket: React.MutableRefObject<Socket | null>;
 }
 
-interface AuthProviderProps {
+interface AppProviderProps {
   children: ReactNode;
 }
 
-export const AuthContext = createContext({} as AuthContextData);
+export const AppContext = createContext({} as AppContextData);
 
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AppProvider({ children }: AppProviderProps) {
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | null>(null);
+
+  const socket = useRef<Socket | null>(io("http://localhost:3333"));
 
   useEffect(() => {
     if (user) {
@@ -27,13 +38,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [window.location.pathname]);
 
   return (
-    <AuthContext.Provider
+    <AppContext.Provider
       value={{
         user,
         setUser,
+        socket,
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </AppContext.Provider>
   );
 }

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { AuthContext } from "./context/AuthContext";
+import { AppContext } from "./context/AppContext";
 import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
 import { makeServer } from "./services/mirage";
@@ -8,7 +8,7 @@ import { makeServer } from "./services/mirage";
 // makeServer();
 
 function App() {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AppContext);
 
   return (
     <Routes>

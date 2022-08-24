@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AppContext } from "../../context/AppContext";
 import { Message } from "../../utils/interfaces";
 import styles from "./styles.module.scss";
 
@@ -8,11 +8,10 @@ interface RoomMessagesProps {
 }
 
 function RoomMessages({ messages }: RoomMessagesProps) {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AppContext);
 
   useEffect(() => {
     const objDiv = document.getElementById("messagesFieldIdToScrollBottom");
-    console.log(objDiv?.scrollHeight);
     if (objDiv) {
       objDiv.scrollTop = objDiv.scrollHeight;
     }

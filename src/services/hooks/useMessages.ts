@@ -10,8 +10,6 @@ export async function getMessages(room_id: number) {
     },
   });
 
-  console.log(data);
-
   return {
     messages: data.messages,
   };

@@ -1,6 +1,6 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AppContext } from "../../context/AppContext";
 import { api } from "../../services/api";
 import {
   getLocalStorageToken,
@@ -11,7 +11,7 @@ import {
 import styles from "./styles.module.scss";
 
 function Login() {
-  const { setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AppContext);
 
   const navigate = useNavigate();
 
