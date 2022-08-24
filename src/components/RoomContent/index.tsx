@@ -15,13 +15,19 @@ function RoomContent() {
 
   return (
     <div className={styles.container}>
-      {isFetching && (
-        <div className={styles.loadingMessages}>
-          <Spinner size={32} color="#fcba03" />
-        </div>
+      {currentRoom ? (
+        <>
+          {isFetching && (
+            <div className={styles.loadingMessages}>
+              <Spinner size={32} color="#fcba03" />
+            </div>
+          )}
+          <RoomMessages messages={data?.messages ?? []} />
+          <RoomInput />
+        </>
+      ) : (
+        <></>
       )}
-      <RoomMessages messages={data?.messages ?? []} />
-      <RoomInput />
     </div>
   );
 }

@@ -11,45 +11,69 @@
     height: calc(100% - 40px);
 
     min-width: 200px;
+    margin-left: 10px;
 
     overflow-y: scroll;
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 
     gap: 0.5rem;
 
-    .room {
-      width: calc(100% - 5px);
+    .fieldAppManager {
+      height: 60px;
+      width: calc(100% - 15px);
 
       border-radius: 2px;
-      background: #252525;
 
-      padding: 7px;
+      background: #252525;
+    }
+
+    .listRooms {
+      flex: 1;
+
+      min-width: 200px;
+
+      overflow-y: scroll;
 
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
 
       gap: 0.5rem;
 
-      strong {
-        color: #fcba03;
-      }
+      .room {
+        width: calc(100% - 5px);
 
-      p {
-        color: #c8c8c8;
-      }
+        border-radius: 2px;
+        background: #252525;
 
-      strong,
-      p {
-        font-size: 14px;
-        text-align: start;
-        display: block;
-        width: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        padding: 7px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        gap: 0.5rem;
+
+        strong {
+          color: #fcba03;
+        }
+
+        p {
+          color: #c8c8c8;
+        }
+
+        strong,
+        p {
+          font-size: 14px;
+          text-align: start;
+          display: block;
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
   }
@@ -57,6 +81,8 @@
   .rightContainer {
     width: calc(75% - 20px);
     height: calc(100% - 40px);
+
+    margin-right: 10px;
 
     display: flex;
     flex-direction: column;

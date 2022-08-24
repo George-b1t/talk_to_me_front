@@ -7,7 +7,7 @@ function RoomHeader() {
 
   return (
     <div className={styles.container}>
-      <h3>{currentRoom?.name}</h3>
+      <h3>{currentRoom?.name ?? "Wellcome to talk to me"}</h3>
     </div>
   );
 }

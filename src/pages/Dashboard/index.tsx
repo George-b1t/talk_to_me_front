@@ -103,16 +103,19 @@ function Dashboard() {
   return (
     <div className={styles.container}>
       <div className={styles.leftContainer}>
-        {rooms.map((room) => (
-          <button
-            onClick={() => handleSetCurrentRoom(room)}
-            key={room.id}
-            className={styles.room}
-          >
-            <strong>{room.name}</strong>
-            <p>{room.lastMessage}</p>
-          </button>
-        ))}
+        <div className={styles.fieldAppManager}></div>
+        <div className={styles.listRooms}>
+          {rooms.map((room) => (
+            <button
+              onClick={() => handleSetCurrentRoom(room)}
+              key={room.id}
+              className={styles.room}
+            >
+              <strong>{room.name}</strong>
+              <p>{room.lastMessage}</p>
+            </button>
+          ))}
+        </div>
       </div>
       <div className={styles.rightContainer}>
         <RoomHeader />
