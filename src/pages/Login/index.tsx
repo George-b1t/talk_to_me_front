@@ -1,8 +1,13 @@
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { api } from "../../services/api";
-import { setLocalStorateUser } from "../../utils/localStorageManager";
+import {
+  getLocalStorageToken,
+  getLocalStorageUser,
+  setLocalStorageToken,
+  setLocalStorageUser,
+} from "../../utils/localStorageManager";
 import styles from "./styles.module.scss";
 
 function Login() {
@@ -12,6 +17,17 @@ function Login() {
 
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const user = getLocalStorageUser();
+    const token = getLocalStorageToken();
+
+    if (token && user) {
+      setUser(user);
+      api.defaults.headers.common["Authorization"] = "Bearer " + token;
+      navigate("/dashboard");
+    }
+  }, []);
 
   function handleLogin(e: FormEvent) {
     e.preventDefault();
@@ -23,7 +39,10 @@ function Login() {
       })
       .then((res) => {
         setUser(res.data.user);
-        setLocalStorateUser(res.data.user);
+        api.defaults.headers.common["Authorization"] =
+          "Bearer " + res.data.token;
+        setLocalStorageUser(res.data.user);
+        setLocalStorageToken(res.data.token);
         navigate("/dashboard");
       });
   }
@@ -50,7 +69,7 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Entrar</button>
+        <button type="submit">Join</button>
       </form>
     </div>
   );

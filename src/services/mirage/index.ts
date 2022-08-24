@@ -1,10 +1,4 @@
-import {
-  ActiveModelSerializer,
-  createServer,
-  Factory,
-  Model,
-  Response,
-} from "miragejs";
+import { ActiveModelSerializer, createServer, Response } from "miragejs";
 
 export function makeServer() {
   const server = createServer({

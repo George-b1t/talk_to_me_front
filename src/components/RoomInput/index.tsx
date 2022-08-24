@@ -1,14 +1,35 @@
-import { useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 
 import { PaperPlaneRight } from "phosphor-react";
 
 import styles from "./styles.module.scss";
+import { api } from "../../services/api";
+import { useSelector } from "react-redux";
+import { selectedCurrentRoom } from "../../context/redux/slices/roomSlice";
+import { AuthContext } from "../../context/AuthContext";
 
 function RoomInput() {
+  const currentRoom = useSelector(selectedCurrentRoom);
+  const { user } = useContext(AuthContext);
+
   const [currentMessage, setCurrentMessage] = useState("");
 
+  function handleSendMessage(e: FormEvent) {
+    e.preventDefault();
+
+    if (!currentMessage || !currentRoom || !user) return;
+
+    api.post("/message/create", {
+      room_id: currentRoom.id,
+      user_id: user.id,
+      content: currentMessage,
+    });
+
+    setCurrentMessage("");
+  }
+
   return (
-    <div className={styles.container}>
+    <form onSubmit={handleSendMessage} className={styles.container}>
       <input
         type="text"
         value={currentMessage}
@@ -16,9 +37,9 @@ function RoomInput() {
       />
 
       <button>
-        <PaperPlaneRight color="#fcba03" size={24} />
+        <PaperPlaneRight type="submit" color="#fcba03" size={24} />
       </button>
-    </div>
+    </form>
   );
 }
 

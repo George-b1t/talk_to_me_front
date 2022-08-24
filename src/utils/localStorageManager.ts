@@ -1,11 +1,26 @@
 import { User } from "./interfaces";
 
-function setLocalStorateUser(user: User) {
+function setLocalStorageUser(user: User) {
   localStorage.setItem("user", JSON.stringify(user));
 }
 
-function getLocalStorateUser() {
-  return JSON.parse(localStorage.getItem("user") ?? "");
+function getLocalStorageUser() {
+  const stringUser = localStorage.getItem("user");
+
+  return stringUser ? JSON.parse(stringUser ?? "") : null;
 }
 
-export { getLocalStorateUser, setLocalStorateUser };
+function setLocalStorageToken(token: string) {
+  localStorage.setItem("token", token);
+}
+
+function getLocalStorageToken() {
+  return localStorage.getItem("token") ?? "";
+}
+
+export {
+  getLocalStorageUser,
+  setLocalStorageUser,
+  getLocalStorageToken,
+  setLocalStorageToken,
+};

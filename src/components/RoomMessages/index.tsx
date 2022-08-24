@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { Message } from "../../utils/interfaces";
 import styles from "./styles.module.scss";
 
@@ -7,6 +8,8 @@ interface RoomMessagesProps {
 }
 
 function RoomMessages({ messages }: RoomMessagesProps) {
+  const { user } = useContext(AuthContext);
+
   useEffect(() => {
     const objDiv = document.getElementById("messagesFieldIdToScrollBottom");
     console.log(objDiv?.scrollHeight);
@@ -21,22 +24,12 @@ function RoomMessages({ messages }: RoomMessagesProps) {
         return (
           <div
             key={message.id}
-            style={message.author.id === 1 ? { alignSelf: "flex-end" } : {}}
+            style={
+              message.user_id === user?.id ? { alignSelf: "flex-end" } : {}
+            }
             className={styles.message}
           >
-            <strong>{message.author.nickname}</strong>
-            <p>{message.content}</p>
-          </div>
-        );
-      })}
-      {messages.map((message) => {
-        return (
-          <div
-            key={message.id}
-            style={message.author.id === 1 ? { alignSelf: "flex-end" } : {}}
-            className={styles.message}
-          >
-            <strong>{message.author.nickname}</strong>
+            <strong>{message.user.nickname}</strong>
             <p>{message.content}</p>
           </div>
         );

@@ -5,7 +5,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
 import { makeServer } from "./services/mirage";
 
-makeServer();
+// makeServer();
 
 function App() {
   const { user } = useContext(AuthContext);
