@@ -6,9 +6,12 @@ import { RoomHeader } from "../../components/RoomHeader";
 import { AppContext } from "../../context/AppContext";
 import { setCurrentRoom } from "../../context/redux/slices/roomSlice";
 import { api } from "../../services/api";
-import { Room } from "../../utils/interfaces";
+import { Message, Room } from "../../utils/interfaces";
 import io from "socket.io-client";
 import styles from "./styles.module.scss";
+import { toast } from "react-toastify";
+import { host } from "../../../host";
+import { queryClient } from "../../services/queryClient";
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -29,7 +32,7 @@ function Dashboard() {
       })
       .then((res) => {
         setRooms(res.data.rooms);
-        socket.current = io("http://localhost:3333");
+        socket.current = io(`http://${host}:3333`);
         setReady(true);
       });
   }, []);
@@ -38,7 +41,24 @@ function Dashboard() {
     if (ready && socket.current && user) {
       socket.current.emit("channel", user.id);
       socket.current.on("chat message", (message) => {
-        console.log(message);
+        toast(`${message.user.nickname} said ${message.content}`);
+
+        queryClient.setQueryData(
+          ["messages", message.room_id],
+          (oldData: any) => {
+            if (!oldData) return;
+
+            let data: {
+              messages: Message[];
+            } = {
+              messages: [],
+            };
+
+            data.messages = [...oldData.messages, message];
+
+            return data;
+          }
+        );
       });
     }
   }, [ready]);

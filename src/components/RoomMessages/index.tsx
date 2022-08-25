@@ -1,25 +1,35 @@
+import { Spinner } from "phosphor-react";
 import { useContext, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { AppContext } from "../../context/AppContext";
+import { selectedCurrentRoom } from "../../context/redux/slices/roomSlice";
+import { useMessages } from "../../services/hooks/useMessages";
 import { Message } from "../../utils/interfaces";
 import styles from "./styles.module.scss";
 
-interface RoomMessagesProps {
-  messages: Message[];
-}
+function RoomMessages() {
+  const currentRoom = useSelector(selectedCurrentRoom);
 
-function RoomMessages({ messages }: RoomMessagesProps) {
   const { user } = useContext(AppContext);
+
+  const { data, isFetching } = useMessages(currentRoom?.id ?? 0);
 
   useEffect(() => {
     const objDiv = document.getElementById("messagesFieldIdToScrollBottom");
     if (objDiv) {
       objDiv.scrollTop = objDiv.scrollHeight;
     }
-  }, [messages]);
+  }, [data]);
 
   return (
     <div id="messagesFieldIdToScrollBottom" className={styles.container}>
-      {messages.map((message) => {
+      {isFetching && (
+        <div className={styles.loadingMessages}>
+          <Spinner size={32} color="#fcba03" />
+        </div>
+      )}
+
+      {data?.messages.map((message: Message) => {
         return (
           <div
             key={message.id}

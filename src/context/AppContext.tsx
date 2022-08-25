@@ -27,7 +27,7 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const [user, setUser] = useState<User | null>(null);
 
-  const socket = useRef<Socket | null>(io("http://localhost:3333"));
+  const socket = useRef<Socket | null>(null);
 
   useEffect(() => {
     if (user) {

@@ -17,18 +17,21 @@ function RoomInput() {
   function handleSendMessage(e: FormEvent) {
     e.preventDefault();
 
-    if (!currentMessage || !currentRoom || !user || !socket.current) return;
+    if (!currentMessage || !currentRoom || !user) return;
 
-    // api.post("/message/create", {
-    //   room_id: currentRoom.id,
-    //   user_id: user.id,
-    //   content: currentMessage,
-    // });
+    api
+      .post("/message/create", {
+        room_id: currentRoom.id,
+        user_id: user.id,
+        content: currentMessage,
+      })
+      .then((res) => {
+        if (!socket.current) return;
 
-    socket.current.emit("chat message", {
-      message: currentMessage,
-      room_id: currentRoom.id,
-    });
+        socket.current.emit("chat message", {
+          message: res.data.content.createdMessage,
+        });
+      });
 
     setCurrentMessage("");
   }
