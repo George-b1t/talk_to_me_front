@@ -25,5 +25,8 @@ export interface Room {
     user_id: number;
     content: string;
     date: string;
+    user: {
+      nickname: string;
+    };
   }[];
 }

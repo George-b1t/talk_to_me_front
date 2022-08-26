@@ -3,6 +3,7 @@
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   padding: 0 20px;
   border-radius: 2px;
@@ -11,5 +12,23 @@
 
   h3 {
     color: #fcba03;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px;
+    border-radius: 2px;
+
+    background: #fcba03;
+
+    color: #252525;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    gap: 0.5rem;
   }
 }

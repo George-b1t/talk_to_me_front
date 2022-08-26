@@ -1,45 +1,47 @@
-import { Lock, LockOpen, X } from "phosphor-react";
+import { X } from "phosphor-react";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import ReactModal from "react-modal";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { AppContext } from "../../context/AppContext";
+import { selectedCurrentRoom } from "../../context/redux/slices/roomSlice";
 import { api } from "../../services/api";
 import styles from "./styles.module.scss";
 
-interface ModalCreateRoomProps {
+interface ModalAddUserProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
-function ModalCreateRoom({ isOpen, onRequestClose }: ModalCreateRoomProps) {
+function ModalAddUser({ isOpen, onRequestClose }: ModalAddUserProps) {
+  const currentRoom = useSelector(selectedCurrentRoom);
   const { user, socket } = useContext(AppContext);
 
-  const [name, setName] = useState("");
-  const [isPrivate, setIsPrivate] = useState(false);
+  const [nickname, setNickname] = useState("");
 
   useEffect(() => {
     if (!isOpen) {
-      setName("");
-      setIsPrivate(false);
+      setNickname("");
     }
   }, [isOpen]);
 
   function handleCreateRoom(e: FormEvent) {
     e.preventDefault();
 
-    if (!user) return;
+    if (!user || !currentRoom) return;
 
     api
-      .post("/room/create", {
-        name,
-        is_private: isPrivate,
-        user_id: user.id,
+      .post("/room/linkUser", {
+        room_id: currentRoom.id,
+        user_id_from: user.id,
+        nickname,
       })
-      .then((res) => {
+      .then(() => {
         if (!socket.current) return;
 
-        socket.current.emit("new_room", {
-          room: res.data.content.createdRoom,
+        socket.current.emit("new_room_user", {
+          room: currentRoom,
+          nickname,
         });
         onRequestClose();
       })
@@ -66,35 +68,24 @@ function ModalCreateRoom({ isOpen, onRequestClose }: ModalCreateRoomProps) {
         <X color="#fff" size={30} />
       </button>
       <div className={styles.container}>
-        <h2>Create a new Room</h2>
+        <h2>Add User</h2>
 
-        <form onSubmit={handleCreateRoom} className={styles.formCreateRoom}>
+        <form onSubmit={handleCreateRoom} className={styles.formAddUser}>
           <div className={styles.formItem}>
-            <label>Name</label>
+            <label>Nickname</label>
             <input
-              name="name"
+              name="nickname"
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
             />
           </div>
-          <div className={styles.formItem}>
-            <label>Private</label>
-            {isPrivate ? (
-              <button type="button" onClick={() => setIsPrivate(false)}>
-                <Lock color="#1a1a1a" size={22} /> Yes
-              </button>
-            ) : (
-              <button type="button" onClick={() => setIsPrivate(true)}>
-                <LockOpen color="#1a1a1a" size={22} /> No
-              </button>
-            )}
-          </div>
-          <button type="submit">Create</button>
+
+          <button type="submit">Add</button>
         </form>
       </div>
     </ReactModal>
   );
 }
 
-export { ModalCreateRoom };
+export { ModalAddUser };
