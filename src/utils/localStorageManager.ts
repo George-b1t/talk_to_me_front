@@ -1,6 +1,6 @@
 import { User } from "./interfaces";
 
-function setLocalStorageUser(user: User) {
+function setLocalStorageUser(user: User | null) {
   localStorage.setItem("user", JSON.stringify(user));
 }
 

@@ -3,9 +3,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AppContext } from "./context/AppContext";
 import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
-import { makeServer } from "./services/mirage";
-
-// makeServer();
 
 function App() {
   const { user } = useContext(AppContext);

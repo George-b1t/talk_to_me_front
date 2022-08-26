@@ -49,7 +49,7 @@ function Rooms() {
         socket.current = io(`http://${host}:3333`);
         setReady(true);
       });
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (ready && socket.current && user) {
@@ -99,7 +99,7 @@ function Rooms() {
         });
       });
     }
-  }, [ready]);
+  }, [ready, user]);
 
   function handleSetCurrentRoom(room: Room) {
     dispatch(setCurrentRoom(room));

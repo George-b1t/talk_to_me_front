@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import {
   createContext,
   ReactNode,
@@ -7,8 +8,16 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { io, Socket } from "socket.io-client";
+import { api } from "../services/api";
 import { User } from "../utils/interfaces";
+import {
+  getLocalStorageToken,
+  getLocalStorageUser,
+  setLocalStorageToken,
+  setLocalStorageUser,
+} from "../utils/localStorageManager";
 
 interface AppContextData {
   user: User | null;
@@ -30,7 +39,32 @@ export function AppProvider({ children }: AppProviderProps) {
   const socket = useRef<Socket | null>(null);
 
   useEffect(() => {
-    if (user) {
+    api.interceptors.response.use(
+      (res) => res,
+      (error: AxiosError) => {
+        const data: any = error.response?.data;
+
+        if (data.message === "Invalid token") {
+          setLocalStorageToken("");
+          setLocalStorageUser(null);
+          setUser(null);
+          navigate("/login");
+        }
+
+        toast(data.message);
+
+        return Promise.reject(error);
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    const tempUser = getLocalStorageUser();
+    const token = getLocalStorageToken();
+
+    if (token && tempUser) {
+      setUser(tempUser);
+      api.defaults.headers.common["Authorization"] = "Bearer " + token;
       navigate("/dashboard");
     } else {
       navigate("/login");

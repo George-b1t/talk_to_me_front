@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import { api } from "../../services/api";
 import {
-  getLocalStorageToken,
-  getLocalStorageUser,
   setLocalStorageToken,
   setLocalStorageUser,
 } from "../../utils/localStorageManager";
@@ -17,17 +15,6 @@ function Login() {
 
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    const user = getLocalStorageUser();
-    const token = getLocalStorageToken();
-
-    if (token && user) {
-      setUser(user);
-      api.defaults.headers.common["Authorization"] = "Bearer " + token;
-      navigate("/dashboard");
-    }
-  }, []);
 
   function handleLogin(e: FormEvent) {
     e.preventDefault();
