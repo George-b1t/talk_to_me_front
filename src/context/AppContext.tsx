@@ -1,15 +1,8 @@
 import { AxiosError } from "axios";
-import {
-  createContext,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { io, Socket } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import { api } from "../services/api";
 import { User } from "../utils/interfaces";
 import {
@@ -51,7 +44,9 @@ export function AppProvider({ children }: AppProviderProps) {
           navigate("/login");
         }
 
-        toast(data.message);
+        toast(data.message, {
+          type: "error",
+        });
 
         return Promise.reject(error);
       }

@@ -1,7 +1,6 @@
 import { Lock, LockOpen, X } from "phosphor-react";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import ReactModal from "react-modal";
-import { toast } from "react-toastify";
 import { AppContext } from "../../context/AppContext";
 import { api } from "../../services/api";
 import styles from "./styles.module.scss";
@@ -42,11 +41,6 @@ function ModalCreateRoom({ isOpen, onRequestClose }: ModalCreateRoomProps) {
           room: res.data.content.createdRoom,
         });
         onRequestClose();
-      })
-      .catch((err) => {
-        toast(err.response.data.message, {
-          type: "error",
-        });
       });
   }
 

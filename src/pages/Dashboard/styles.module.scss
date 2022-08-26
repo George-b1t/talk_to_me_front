@@ -14,6 +14,7 @@
     margin-left: 10px;
 
     overflow-y: scroll;
+    overflow-x: hidden;
 
     display: flex;
     flex-direction: column;
@@ -39,6 +40,21 @@
   .container {
     .rightContainer {
       width: calc(100% - 227px - 20px);
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+
+    .leftContainer {
+      width: 100%;
+    }
+
+    .rightContainer {
+      width: 100%;
     }
   }
 }

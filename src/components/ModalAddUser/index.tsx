@@ -2,7 +2,6 @@ import { X } from "phosphor-react";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import ReactModal from "react-modal";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { AppContext } from "../../context/AppContext";
 import { selectedCurrentRoom } from "../../context/redux/slices/roomSlice";
 import { api } from "../../services/api";
@@ -44,11 +43,6 @@ function ModalAddUser({ isOpen, onRequestClose }: ModalAddUserProps) {
           nickname,
         });
         onRequestClose();
-      })
-      .catch((err) => {
-        toast(err.response.data.message, {
-          type: "error",
-        });
       });
   }
 
