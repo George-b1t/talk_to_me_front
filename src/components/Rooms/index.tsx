@@ -55,14 +55,14 @@ function Rooms() {
     if (ready && socket.current && user) {
       socket.current.emit("rooms", user.id);
       socket.current.on("room", (room) => {
-        console.log(room);
-
         setRooms((oldValue) => {
           return [...oldValue, room];
         });
       });
       socket.current.on("chat message", (message) => {
-        toast(`${message.user.nickname} said ${message.content}`);
+        if (user && !(message.user.id === user.id)) {
+          toast(`${message.user.nickname} said ${message.content}`);
+        }
 
         queryClient.setQueryData(
           ["messages", message.room_id],
